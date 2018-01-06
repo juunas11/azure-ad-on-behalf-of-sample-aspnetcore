@@ -38,27 +38,27 @@ namespace ApiOnBehalfSample.Services
 
         public async Task AuthenticateRequestAsync(HttpRequestMessage request)
         {
-            var clientCredential = new ClientCredential(_authSettings.ClientId, _authSettings.ClientSecret);
-
             var httpContext = _httpContextAccessor.HttpContext;
 
             //Get the access token used to call this API
             string token = await httpContext.GetTokenAsync("access_token");
 
-            var user = httpContext.User;
             //We are passing an *assertion* to Azure AD about the current user
             //Here we specify that assertion's type, that is a JWT Bearer token
             string assertionType = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 
             //User name is needed here only for ADAL, it is not passed to AAD
             //ADAL uses it to find a token in the cache if available
+            var user = httpContext.User;
             string userName = user.FindFirstValue(ClaimTypes.Upn) ?? user.FindFirstValue(ClaimTypes.Email);
+
             var userAssertion = new UserAssertion(token, assertionType, userName);
 
             //Construct the token cache
             var cache = new DistributedTokenCache(user, _distributedCache, _loggerFactory, _dataProtectionProvider);
 
             var authContext = new AuthenticationContext(_authSettings.Authority, cache);
+            var clientCredential = new ClientCredential(_authSettings.ClientId, _authSettings.ClientSecret);
             //Acquire access token
             var result = await authContext.AcquireTokenAsync("https://graph.microsoft.com", clientCredential, userAssertion);
             //Set the authentication header

@@ -34,8 +34,8 @@ namespace ApiOnBehalfSample
                 o.AddPolicy("default", builder =>
                 {
                     builder
-                        .RequireAuthenticatedUser();
-                        //.RequireClaim(AzureAdClaimTypes.Scope, "user_impersonation");
+                        .RequireAuthenticatedUser()
+                        .RequireClaim(AzureAdClaimTypes.Scope, "user_impersonation");
                     //Require additional claims, setup other policies etc.
                 });
             });
