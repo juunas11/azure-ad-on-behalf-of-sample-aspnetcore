@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,14 +22,14 @@ namespace ApiOnBehalfSample
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(o =>
             {
                 o.Filters.Add(new AuthorizeFilter("default"));
-            });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddAuthorization(o =>
             {
                 o.AddPolicy("default", builder =>
