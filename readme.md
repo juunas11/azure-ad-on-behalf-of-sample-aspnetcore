@@ -1,6 +1,6 @@
 # Azure AD On-Behalf-Of authentication sample
 
-This sample contains an ASP.NET Core 2.0 API that calls Microsoft Graph API
+This sample contains an ASP.NET Core 2.1 API that calls Microsoft Graph API
 as the user which called this API.
 
 The API uses Azure AD authentication, so in order to use it, you will need
